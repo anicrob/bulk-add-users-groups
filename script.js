@@ -1,5 +1,4 @@
 var fs = require("fs");
-const { join } = require("path");
 var util = require("util");
 var log_file = fs.createWriteStream(__dirname + "/debug.log", { flags: "w" });
 var log_stdout = process.stdout;
@@ -38,8 +37,8 @@ const getUserIds = async () => {
           }
         );
         if (response.status !== 200) {
-            console.log(`${response.status}: ${response.error}`);
-            return;
+          console.log(`${response.status}: ${response.error}`);
+          return;
         }
         let users = await response.json();
         users.map(async (user) => {
@@ -122,14 +121,21 @@ const addUsersToGroups = async (users) => {
 };
 
 const script = async () => {
+  const start = Date.now();
   const userAPI = await getUserIds();
   const usersToAddToGroups = await confirmUserPartOfConditionGroup(userAPI);
   const addedUserToGroups = await addUsersToGroups(usersToAddToGroups);
   if (addedUserToGroups) {
+    const end = Date.now();
+    const totalTime = end - start;
     console.log(
-      `${new Date().toGMTString()} - ${confirmedUsers.map(
+      `\n-------------------------------------------------------------------------------------------------------------------\n\n${new Date().toGMTString()} - ✅ ${
+        confirmedUsers.length
+      } user(s) (${confirmedUsers.map(
         (user) => user.displayName
-      )} have been added to the requested groups. Please check the logs for any errors.`
+      )}) have been added to the requested groups in ${
+        totalTime / 1000
+      } seconds. \n\n----> Please check the logs for any errors.\n`
     );
   }
 };
