@@ -1,4 +1,5 @@
 var fs = require("fs");
+const { join } = require("path");
 var util = require("util");
 var log_file = fs.createWriteStream(__dirname + "/debug.log", { flags: "w" });
 var log_stdout = process.stdout;
@@ -36,7 +37,10 @@ const getUserIds = async () => {
             },
           }
         );
-        if (response.status !== 200) return;
+        if (response.status !== 200) {
+            console.log(`${response.status}: ${response.error}`);
+            return;
+        }
         let users = await response.json();
         users.map(async (user) => {
           if (user.active) {
@@ -73,7 +77,9 @@ const confirmUserPartOfConditionGroup = async (apis) => {
             } is not part of the condition group`
           );
         }
-      } catch {}
+      } catch (err) {
+        console.log(err);
+      }
     })
   );
   return confirmedUsers;
