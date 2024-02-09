@@ -10,7 +10,7 @@ Follow the set up directions in the Setup Instructions section to run this scrip
 * [Setup Instructions](#setup-instructions)
 * [Usage](#usage)
 * [Basic Auth](#basic-auth)
-* [Permissions](#permissions--limitations)
+* [Permissions & Limitations](#permissions--limitations)
 * [Credits](#credits)
 
 
